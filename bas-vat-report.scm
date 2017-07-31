@@ -218,7 +218,11 @@
                           subtotal-style export?)
   (let ((row-contents '())
         (columns (map (lambda (coll) (coll 'format gnc:make-gnc-monetary #f)) subtotal-collectors))
-        (row 0))
+        (row 0)
+        (amount-or-blank (lambda (monetary)
+                           (if (zero? (gnc:gnc-numeric-num (gnc:gnc-monetary-amount monetary)))
+                               (gnc:html-make-empty-cell)
+                               monetary))))
     
     ;(gnc:warn "Columns = " columns)
     (addto! row-contents (gnc:make-html-table-cell/size/markup 1 width "total-label-cell" subtotal-string))
@@ -226,7 +230,7 @@
                 (addto! row-contents
                         (gnc:make-html-table-cell/markup
                          "total-number-cell"
-                         (car coll))))
+                         (amount-or-blank (car coll)))))
               columns)
     (gnc:html-table-append-row/markup! table subtotal-style (reverse row-contents))
 
@@ -238,7 +242,7 @@
                             (addto! row-contents
                                     (gnc:make-html-table-cell/markup
                                      "total-number-cell"
-                                     (list-ref coll row))))
+                                     (amount-or-blank (list-ref coll row)))))
                           columns)
                 (gnc:html-table-append-row/markup! table subtotal-style (reverse row-contents)))
               (cdr (car columns)))))
@@ -588,12 +592,14 @@
     ;        (addto! row-contents " ")))
 
     (for-each (lambda (cell)
-                (addto! row-contents
-                        (gnc:make-html-table-cell/markup
-                         "number-cell"
-                         (gnc:html-transaction-anchor
-                          parent
-                          (gnc:make-gnc-monetary report-currency cell)))))
+                (if (zero? (gnc:gnc-numeric-num (gnc:gnc-monetary-amount cell)))
+                    (addto! row-contents (gnc:html-make-empty-cell))
+                    (addto! row-contents
+                            (gnc:make-html-table-cell/markup
+                             "number-cell"
+                             (gnc:html-transaction-anchor
+                              parent
+                              (gnc:make-gnc-monetary report-currency cell))))))
               cells)
     
     (gnc:html-table-append-row/markup! table row-style
