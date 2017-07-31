@@ -1,0 +1,1 @@
+(load (gnc-build-dotgnucash-path "reports/bas-vat-report.scm"))
