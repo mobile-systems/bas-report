@@ -11,4 +11,6 @@ You will need to set up VAT/GST accounts, usually liability or asset accounts, w
 You must record these accounts using Business > Tax Tables as described.
 To run report, run Report > Business > BAS/VAT Report, and select Income & Expense business accounts in the Accounts tab.
 
+Example report: http://htmlpreview.github.io/?https://raw.githubusercontent.com/christopherlam/bas-report/master/bas1.html
+
 To submit suggestions, bugs etc please send feedback in github.
