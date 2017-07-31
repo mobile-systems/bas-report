@@ -57,10 +57,10 @@
 ;(define optname-table-export (N_ "Table for Exporting"))
 (define optname-common-currency (N_ "Common Currency"))
 (define TAX-SETUP-DESC (string-append 
-  " From Business > Sales Tax Tables, create a Tax Table named 'Collected' for tax collected on sales"
-  " (to send to authorities) and 'Paid' for tax paid on purchases (to be refunded from authorities)."
-  " These will be used to tabulate data. Please note the tax table percentages or values are unused"
-  " in this report. No warranty is implied. Please independently verify the figures."))
+                        " From Business > Sales Tax Tables, create a Tax Table named 'Collected' for tax collected on sales,"
+                        " (to send to authorities) and 'Paid' for tax paid on purchases (to be refunded from authorities)."
+                        " These will be used to tabulate data. Please note the tax table percentages or values are unused"
+                        " in this report. No warranty is implied. Please independently verify the figures."))
 (define optname-currency (N_ "Report's currency"))
 (define def:grand-total-style "grand-total")
 (define def:normal-row-style "normal-row")
@@ -220,7 +220,7 @@
         (columns (map (lambda (coll) (coll 'format gnc:make-gnc-monetary #f)) subtotal-collectors))
         (row 0))
     
-    (gnc:warn "Columns = " columns)
+    ;(gnc:warn "Columns = " columns)
     (addto! row-contents (gnc:make-html-table-cell/size/markup 1 width "total-label-cell" subtotal-string))
     (for-each (lambda (coll)
                 (addto! row-contents
@@ -489,20 +489,18 @@
          (report-currency (if (opt-val gnc:pagename-general optname-common-currency)
                               (opt-val gnc:pagename-general optname-currency)
                               currency))
-         (trans-date (gnc-transaction-get-date-posted parent)))
-
-    (define (converted num)
-      (gnc:exchange-by-pricedb-nearest
-       (gnc:make-gnc-monetary currency num)
-       report-currency
-       (timespecCanonicalDayTime trans-date)))
+         (trans-date (gnc-transaction-get-date-posted parent))
+         (converted (lambda (num)
+                      (gnc:exchange-by-pricedb-nearest
+                       (gnc:make-gnc-monetary currency num)
+                       report-currency
+                       (timespecCanonicalDayTime trans-date)))))
     
-    (define (add-cell content)
-      (addto! row-contents
-              (gnc:make-html-table-cell/markup "number-cell"
-                                               (gnc:html-transaction-anchor
-                                                parent
-                                                (gnc:make-gnc-monetary report-currency content)))))
+    (define cells
+      (map (lambda (cell)
+             (converted ((cdr cell) split)))
+           cell-calculators))
+    
     (if (used-date column-vector)
         (addto! row-contents
                 (if transaction-row?
@@ -590,15 +588,18 @@
     ;        (addto! row-contents " ")))
 
     (for-each (lambda (cell)
-                (add-cell (converted ((cdr cell) split))))
-              cell-calculators)
-
+                (addto! row-contents
+                        (gnc:make-html-table-cell/markup
+                         "number-cell"
+                         (gnc:html-transaction-anchor
+                          parent
+                          (gnc:make-gnc-monetary report-currency cell)))))
+              cells)
+    
     (gnc:html-table-append-row/markup! table row-style
                                        (reverse row-contents))
-
-    (map (lambda (cell)
-           (converted ((cdr cell) split)))
-         cell-calculators)))
+    cells
+    ))
 
 (define date-sorting-types (list 'date 'register-order))
 
@@ -1495,7 +1496,7 @@
   (gnc:report-starting reportname)
   
   (let* ((document (gnc:make-html-document))
-         (c_account_1 (opt-val gnc:pagename-accounts "Accounts"))  ;BAS***
+         (c_account_1 (opt-val gnc:pagename-accounts "Accounts"))
          (c_account_2 (opt-val gnc:pagename-accounts "Filter By..."))
          (accounts-gst-collected (map (lambda (ttentry)
                                         (gncTaxTableEntryGetAccount ttentry))
@@ -1527,8 +1528,6 @@
     ;(gnc:warn "c1 is " c_account_1)
     ;(gnc:warn "c2 is " c_account_2)
     ;(gnc:warn "first c1 is " (xaccAccountGetName (car c_account_1)))
-    
-    (gnc:warn "c1 is " c_account_1)
     
     (if (not (or (null? c_account_1) (and-map not c_account_1)))
         (begin
@@ -1681,10 +1680,7 @@
           (gnc:html-document-add-object!
            document
            (gnc:make-html-text
-            (gnc:html-markup-p TAX-SETUP-DESC
-             )))
-          )
-        )
+            (gnc:html-markup-p TAX-SETUP-DESC)))))
 
     (gnc:report-finished)
     document))
