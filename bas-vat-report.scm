@@ -1675,7 +1675,7 @@
              "This report is useful to calculate periodic business tax liability/refund from"
              " authorities. From <i>Edit report options</i> above, choose your Business Income and Business Expense accounts."
              " Each transaction may contain a split to a tax account, in addition to the accounts payable/receivable or bank accounts."
-             " e.g. Income:Sales -$1000, Income:GSTonSales $-100, Asset:Bank $1100")))
+             " e.g. Income:Sales -$1000, Liability:GSTonSales $-100, Asset:Bank $1100")))
           
           (gnc:html-document-add-object!
            document
