@@ -4,8 +4,8 @@
 <style type="text/css">
 h3 { font-family: Sans; font-size: 15pt; font-weight: bold;  }
 a { font-family: Sans; font-size: 10pt; font-style: italic;  }
-body, p, table, tr, td { text-align: left; font-family: Sans; font-size: 10pt;  }
-tr.alternate-row { background: #ffffff }
+body, p, table, tr, td { text-align: left; vertical-align: top; font-family: Sans; font-size: 10pt;  }
+tr.alternate-row { background: #fffff0 }
 th.column-heading-left { text-align: left; font-family: Sans; font-size: 10pt;  }
 th.column-heading-center { text-align: center; font-family: Sans; font-size: 10pt;  }
 th.column-heading-right { text-align: right; font-family: Sans; font-size: 10pt;  }
@@ -27,247 +27,33 @@ BAS/VAT Report (beta)</title></head>
 
 <h3>From 01/07/2016 To 30/06/2017</h3>
 
-<p>Input Tax accounts: <generic> (Assets:GST:Paid)</p>
+<p>Input Tax accounts: <generic> (Assets:GST:GST on Purchases)</p>
 
-<p>Output Tax accounts: <generic> (Assets:GST:Collected)</p>
+<p>Output Tax accounts: <generic> (Assets:GST:Reduced GST Sales Assets:GST:Standard GST Sales)</p>
 
-<table border="0" cellpadding="4" cellspacing="0">
+<table border="0.0" cellpadding="4.0" cellspacing="0">
 <tr>
 <th>Date</th>
 
 <th>Description</th>
 
-<th>Total    <br> Sales        <br> BAS G1  </th>
+<th>Total Sales</th>
 
-<th>GST on   <br> Sales        <br> BAS 1A/VAT 1</th>
+<th>Net Sales</th>
 
-<th>Sales    <br> without GST  <br> VAT 6</th>
+<th>Reduced GST Sales</th>
 
-<th>Total    <br> Purchases    <br> BAS G11 </th>
+<th>Standard GST Sales</th>
 
-<th>GST on   <br> Purchases    <br> BAS 1B/VAT 4</th>
+<th>Total Purchases</th>
 
-<th>Purchases<br> without GST  <br> VAT 7</th>
+<th>Net Purchases</th>
 
-<th>Bank     <br> Remittance</th>
-</tr>
+<th>GST on Purchases</th>
 
-<tr bgcolor="#ffffff">
-<td rowspan="1" colspan="2">
-<a href="gnc-register:acct-guid=84bf6de2a6e0dc44fbeae960a644dcb6#">Expenses</a>
-</td>
-</tr>
+<th>Bank Remittance</th>
 
-<tr>
-<td class="date-cell" rowspan="1" colspan="1">05/02/2017</td>
-
-<td class="text-cell" rowspan="1" colspan="1">Purchase services for $2000 + $200</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$2,200.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$200.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$2,000.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">-$2,200.00</a>
-</td>
-</tr>
-
-<tr bgcolor="#ffffff">
-<td class="date-cell" rowspan="1" colspan="1">08/02/2017</td>
-
-<td class="text-cell" rowspan="1" colspan="1">Purchase services for $1500, no GST charged</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$1,500.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$1,500.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">-$1,500.00</a>
-</td>
-</tr>
-
-<tr>
-<td class="date-cell" rowspan="1" colspan="1">26/04/2017</td>
-
-<td class="text-cell" rowspan="1" colspan="1">Hybrid. Earn $4000 + $400 GST, spend $1000 + $100 GST. Net = $3300 into bank</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$4,400.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$400.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$4,000.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$1,100.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$100.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$1,000.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$3,300.00</a>
-</td>
-</tr>
-
-<tr bgcolor="#ffffff">
-<td class="total-label-cell" rowspan="1" colspan="2">Total For Expenses</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">-$4,400.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">-$400.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">-$4,000.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$4,800.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$300.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$4,500.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">-$400.00</td>
-</tr>
-
-<tr bgcolor="#ffffff">
-<td rowspan="1" colspan="2">
-<a href="gnc-register:acct-guid=6f699d49e5af88ed9138a576ed4147d5#">Foreign Purchases</a>
-</td>
-</tr>
-
-<tr bgcolor="#ffffff">
-<td class="date-cell" rowspan="1" colspan="1">10/02/2017</td>
-
-<td class="text-cell" rowspan="1" colspan="1">Foreign purchase. £500GBP = $800, with $80 GST #meaningless</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$880.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$80.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$800.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">-$880.00</a>
-</td>
-</tr>
-
-<tr>
-<td class="date-cell" rowspan="1" colspan="1">15/04/2017</td>
-
-<td class="text-cell" rowspan="1" colspan="1">Foreign purchase. £625 = $1000, no tax involved</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$1,000.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$0.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$1,000.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">-$1,000.00</a>
-</td>
-</tr>
-
-<tr bgcolor="#ffffff">
-<td class="total-label-cell" rowspan="1" colspan="2">Total For Foreign Purchases</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$1,880.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$80.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">$1,800.00</td>
-
-<td class="total-number-cell" rowspan="1" colspan="1">-$1,880.00</td>
+<th>Tax Refund</th>
 </tr>
 
 <tr bgcolor="#ffffff">
@@ -276,7 +62,7 @@ BAS/VAT Report (beta)</title></head>
 </td>
 </tr>
 
-<tr bgcolor="#ffffff">
+<tr>
 <td class="date-cell" rowspan="1" colspan="1">01/01/2017</td>
 
 <td class="text-cell" rowspan="1" colspan="1">Income $1000 + $100GST</td>
@@ -286,27 +72,61 @@ BAS/VAT Report (beta)</title></head>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">-$100.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
 <a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">-$1,000.00</a>
 </td>
 
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">$0.00</a>
-</td>
+<td>&nbsp;&nbsp;&nbsp;</td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">$0.00</a>
+<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">-$100.00</a>
 </td>
 
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">$0.00</a>
-</td>
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
 
 <td class="number-cell" rowspan="1" colspan="1">
 <a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">$1,100.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f70352cd2240ed2277da2c6961ba07bf#">-$100.00</a>
+</td>
+</tr>
+
+<tr bgcolor="#fffff0">
+<td class="date-cell" rowspan="1" colspan="1">02/01/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Income $1000 + $50GST Reduced GST rate</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f6e4d11f55f3547773ea00d155f68e46#">-$1,050.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f6e4d11f55f3547773ea00d155f68e46#">-$1,000.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f6e4d11f55f3547773ea00d155f68e46#">-$50.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f6e4d11f55f3547773ea00d155f68e46#">$1,050.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=f6e4d11f55f3547773ea00d155f68e46#">-$50.00</a>
 </td>
 </tr>
 
@@ -320,80 +140,308 @@ BAS/VAT Report (beta)</title></head>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">-$200.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
 <a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">-$2,000.00</a>
 </td>
 
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">$0.00</a>
-</td>
+<td>&nbsp;&nbsp;&nbsp;</td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">$0.00</a>
+<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">-$200.00</a>
 </td>
 
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">$0.00</a>
-</td>
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
 
 <td class="number-cell" rowspan="1" colspan="1">
 <a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">$2,200.00</a>
 </td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=3153c297d88ceaf1b16671642bdb9ddf#">-$200.00</a>
+</td>
 </tr>
 
-<tr bgcolor="#ffffff">
+<tr bgcolor="#fffff0">
 <td class="date-cell" rowspan="1" colspan="1">08/01/2017</td>
 
-<td class="text-cell" rowspan="1" colspan="1">Income $1000, but only $300 attracted a tax of $30. $700 was not taxable.</td>
+<td class="text-cell" rowspan="1" colspan="1">Income $1000, but only $500 services was subject to 10%GST</td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$1,030.00</a>
-</td>
-
-<td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$30.00</a>
+<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$1,050.00</a>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
 <a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$1,000.00</a>
 </td>
 
+<td>&nbsp;&nbsp;&nbsp;</td>
+
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">$0.00</a>
+<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$50.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">$1,050.00</a>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">$0.00</a>
+<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">-$50.00</a>
+</td>
+</tr>
+
+<tr>
+<td class="date-cell" rowspan="1" colspan="1">26/04/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Hybrid transaction - earn $4000 + $400 GST, spend $1000 + $100 GST. Net = $3300 into bank</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$4,400.00</a>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">$0.00</a>
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$4,000.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$400.00</a>
 </td>
 
 <td class="number-cell" rowspan="1" colspan="1">
-<a href="gnc-register:trans-guid=3fe2faa990ca84c3164cc82b97480dac#">$1,030.00</a>
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$1,100.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$1,000.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$100.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">$3,300.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=7fc1a61ec5f6db9ee6352c672022007c#">-$300.00</a>
 </td>
 </tr>
 
 <tr bgcolor="#ffffff">
 <td class="total-label-cell" rowspan="1" colspan="2">Total For Income</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$4,330.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$9,800.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$330.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$9,000.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$4,000.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$50.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$750.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">$1,100.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$0.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">$1,000.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$4,330.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">$100.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$8,700.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">-$700.00</td>
+</tr>
+
+<tr bgcolor="#ffffff">
+<td rowspan="1" colspan="2">
+<a href="gnc-register:acct-guid=84bf6de2a6e0dc44fbeae960a644dcb6#">Expenses</a>
+</td>
+</tr>
+
+<tr bgcolor="#fffff0">
+<td class="date-cell" rowspan="1" colspan="1">05/02/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Purchase services for $2000 + $200</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$2,200.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$2,000.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$200.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">-$2,200.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=105c39a63908b4f002791bb1c8457d2d#">$200.00</a>
+</td>
+</tr>
+
+<tr>
+<td class="date-cell" rowspan="1" colspan="1">08/02/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Purchase services for $1500, no GST charged</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$1,500.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">$1,500.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=1ea5114fa662a4661e0cce96a0770de1#">-$1,500.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+</tr>
+
+<tr bgcolor="#ffffff">
+<td class="total-label-cell" rowspan="1" colspan="2">Total For Expenses</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$3,700.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$3,500.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$200.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">-$3,700.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$200.00</td>
+</tr>
+
+<tr bgcolor="#ffffff">
+<td rowspan="1" colspan="2">
+<a href="gnc-register:acct-guid=6f699d49e5af88ed9138a576ed4147d5#">Foreign Purchases</a>
+</td>
+</tr>
+
+<tr bgcolor="#fffff0">
+<td class="date-cell" rowspan="1" colspan="1">10/02/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Purchase foreign services for $800 = £500, with $80 GST #ThisIsMeaningless.</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$880.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$800.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$80.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">-$880.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=959074dd6e5e59d1a4ae145abb884043#">$80.00</a>
+</td>
+</tr>
+
+<tr>
+<td class="date-cell" rowspan="1" colspan="1">15/04/2017</td>
+
+<td class="text-cell" rowspan="1" colspan="1">Purchase foreign services $1000 = £625, no tax involved</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$1,000.00</a>
+</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">$1,000.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td class="number-cell" rowspan="1" colspan="1">
+<a href="gnc-register:trans-guid=04b7445ded7b9c8626510cc8dce8e97b#">-$1,000.00</a>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+</tr>
+
+<tr bgcolor="#ffffff">
+<td class="total-label-cell" rowspan="1" colspan="2">Total For Foreign Purchases</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$1,880.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$1,800.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$80.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">-$1,880.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$80.00</td>
 </tr>
 
 <tr bgcolor="#ffffff">
@@ -404,19 +452,23 @@ BAS/VAT Report (beta)</title></head>
 <tr bgcolor="#ffffff">
 <td class="total-label-cell" rowspan="1" colspan="2">Grand Total</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$8,730.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$9,800.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$730.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$9,000.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">-$8,000.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">-$50.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">-$750.00</td>
 
 <td class="total-number-cell" rowspan="1" colspan="1">$6,680.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$380.00</td>
-
 <td class="total-number-cell" rowspan="1" colspan="1">$6,300.00</td>
 
-<td class="total-number-cell" rowspan="1" colspan="1">$2,050.00</td>
+<td class="total-number-cell" rowspan="1" colspan="1">$380.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">$3,120.00</td>
+
+<td class="total-number-cell" rowspan="1" colspan="1">-$420.00</td>
 </tr>
 </table>
 </body>

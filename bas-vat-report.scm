@@ -57,10 +57,11 @@
 ;(define optname-table-export (N_ "Table for Exporting"))
 (define optname-common-currency (N_ "Common Currency"))
 (define TAX-SETUP-DESC (string-append 
-                        " From Business > Sales Tax Tables, create a Tax Table named 'Collected' for tax collected on sales,"
-                        " (to send to authorities) and 'Paid' for tax paid on purchases (to be refunded from authorities)."
+                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales,"
+                        " (to send to authorities) and 'Input' for tax paid on purchases (to be refunded from authorities)."
                         " These will be used to tabulate data. Please note the tax table percentages or values are unused"
-                        " in this report. No warranty is implied. Please independently verify the figures."))
+                        " in this report. No warranty is implied. Please independently verify the figures. Please note"
+                        " the Input/Output account names will be used to label the columns."))
 (define optname-currency (N_ "Report's currency"))
 (define def:grand-total-style "grand-total")
 (define def:normal-row-style "normal-row")
@@ -1047,8 +1048,8 @@
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; Here comes the big function that builds the whole table.
 (define (make-split-table splits options
-                          accounts-gst-paid
-                          accounts-gst-collected
+                          accounts-tax-paid
+                          accounts-tax-collected
                           accounts-incomes
                           accounts-purchases
                           primary-subtotal-pred
@@ -1061,11 +1062,6 @@
   (let ((work-to-do (length splits))
         (work-done 0)
         (used-columns (build-column-used options)))
-
-    ;(define GST_RATE (gnc-numeric-create 20 100))
-    ;(define GST_RATE (gnc-numeric-create
-    ;                  (inexact->exact (gnc:option-value (gnc:lookup-option options gnc:pagename-accounts "VAT/GST Rate")))
-    ;                  100))
 
     (define calculated-cells
       (letrec
@@ -1090,29 +1086,35 @@
                                       splits-in-transaction)
 
                             sum)))                                 
-           (gst-on-sales (lambda (s) (split-adder s accounts-gst-collected #f)))
-           (gst-on-purchases (lambda (s) (split-adder s accounts-gst-paid #f)))
-           (incomes-without-gst (lambda (s) (split-adder s accounts-incomes #f)))
-           (purchases-without-gst (lambda (s) (split-adder s accounts-purchases #f)))
-           ;(incomes-without-gst (lambda (s) (split-adder s #f ACCT-TYPE-INCOME)))
-           ;(purchases-without-gst (lambda (s) (split-adder s #f ACCT-TYPE-EXPENSE)))
-           
-           (total-sales (lambda (s) (gnc-numeric-add (gst-on-sales s) (incomes-without-gst s) GNC-DENOM-AUTO GNC-RND-ROUND)))
-           ;(gst-free-sales (lambda (s) (gnc-numeric-sub (incomes-without-gst s)
-           ;                                             (gnc-numeric-div (gst-on-sales s) GST_RATE
-           ;                                                              GNC-DENOM-AUTO GNC-RND-ROUND)
-           ;                                             GNC-DENOM-AUTO GNC-RND-ROUND)))
-           (total-purchases (lambda (s) (gnc-numeric-add (gst-on-purchases s) (purchases-without-gst s) GNC-DENOM-AUTO GNC-RND-ROUND)))
+           ;(incomes-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-INCOME)))
+           ;(purchases-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-EXPENSE)))
+           (tax-on-sales (lambda (s) (split-adder s accounts-tax-collected #f)))
+           (tax-on-purchases (lambda (s) (split-adder s accounts-tax-paid #f)))
+           (incomes-without-tax (lambda (s) (split-adder s accounts-incomes #f)))
+           (purchases-without-tax (lambda (s) (split-adder s accounts-purchases #f)))
+           (account-adder (lambda (acc) (lambda (s) (split-adder s (list acc) #f))))
+           (total-sales (lambda (s) (gnc-numeric-add (tax-on-sales s) (incomes-without-tax s) GNC-DENOM-AUTO GNC-RND-ROUND)))
+           (total-purchases (lambda (s) (gnc-numeric-add (tax-on-purchases s) (purchases-without-tax s) GNC-DENOM-AUTO GNC-RND-ROUND)))
            (bank-remittance (lambda (s) (gnc-numeric-neg (gnc-numeric-add (total-sales s) (total-purchases s) GNC-DENOM-AUTO GNC-RND-ROUND))))
+           (tax-refund-due (lambda (s)(gnc-numeric-add (tax-on-purchases s) (tax-on-sales s) GNC-DENOM-AUTO GNC-RND-ROUND)))
            )
-        (list (cons "Total    <br> Sales        <br> BAS G1  "            total-sales)
-              ;(cons "GST-free <br> Sales        <br> BAS G3  "            gst-free-sales)
-              (cons "GST on   <br> Sales        <br> BAS 1A/VAT 1"        gst-on-sales)
-              (cons "Sales    <br> without GST  <br> VAT 6"               incomes-without-gst)
-              (cons "Total    <br> Purchases    <br> BAS G11 "            total-purchases)
-              (cons "GST on   <br> Purchases    <br> BAS 1B/VAT 4"        gst-on-purchases)
-              (cons "Purchases<br> without GST  <br> VAT 7"               purchases-without-gst)
-              (cons "Bank     <br> Remittance"                            bank-remittance))))
+        (append
+         (list
+          (cons "Total Sales" total-sales)
+          (cons "Net Sales" incomes-without-tax))
+         (map (lambda (acc)
+                (cons (xaccAccountGetName acc) (account-adder acc)))
+              accounts-tax-collected)
+         (list
+          (cons "Total Purchases" total-purchases)
+          (cons "Net Purchases" purchases-without-tax))
+         (map (lambda (acc)
+                (cons (xaccAccountGetName acc) (account-adder acc)))
+              accounts-tax-paid)
+         (list
+          (cons "Bank Remittance" bank-remittance)
+          (cons "Tax Refund" tax-refund-due)))
+              ))
 
     
     (define (get-account-types-to-reverse options)
@@ -1504,12 +1506,12 @@
   (let* ((document (gnc:make-html-document))
          (c_account_1 (opt-val gnc:pagename-accounts "Accounts"))
          (c_account_2 (opt-val gnc:pagename-accounts "Filter By..."))
-         (accounts-gst-collected (map (lambda (ttentry)
+         (accounts-tax-collected (map (lambda (ttentry)
                                         (gncTaxTableEntryGetAccount ttentry))
-                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Collected"))))
-         (accounts-gst-paid (map (lambda (ttentry)
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output"))))
+         (accounts-tax-paid (map (lambda (ttentry)
                                    (gncTaxTableEntryGetAccount ttentry))
-                                 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Paid"))))
+                                 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input"))))
          (accounts-incomes (filter (lambda (acc) (eq? (xaccAccountGetType acc) ACCT-TYPE-INCOME)) c_account_1))
          (accounts-purchases (filter (lambda (acc) (eq? (xaccAccountGetType acc) ACCT-TYPE-EXPENSE)) c_account_1))
          (filter-mode (opt-val gnc:pagename-accounts "Filter Type"))
@@ -1595,8 +1597,8 @@
                      (make-split-table 
                       splits 
                       options
-                      accounts-gst-paid
-                      accounts-gst-collected
+                      accounts-tax-paid
+                      accounts-tax-collected
                       accounts-incomes
                       accounts-purchases
                       (get-subtotal-pred optname-prime-sortkey 
@@ -1631,7 +1633,7 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Input Tax accounts: "
-                   (map gnc-account-get-full-name accounts-gst-paid)
+                   (map gnc-account-get-full-name accounts-tax-paid)
                    )))
 
                 (gnc:html-document-add-object! 
@@ -1639,10 +1641,10 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Output Tax accounts: "
-                   (map gnc-account-get-full-name accounts-gst-collected)
+                   (map gnc-account-get-full-name accounts-tax-collected)
                    )))
 
-                (if (null? (append accounts-gst-collected accounts-gst-paid))
+                (if (null? (append accounts-tax-collected accounts-tax-paid))
                     (gnc:html-document-add-object! 
                      document
                      (gnc:make-html-text
@@ -1681,7 +1683,7 @@
              "This report is useful to calculate periodic business tax liability/refund from"
              " authorities. From <i>Edit report options</i> above, choose your Business Income and Business Expense accounts."
              " Each transaction may contain a split to a tax account, in addition to the accounts payable/receivable or bank accounts."
-             " e.g. Income:Sales -$1000, Liability:GSTonSales $-100, Asset:Bank $1100")))
+             " e.g. Income:Sales -$1000, Liability:VAT on Sales -$100, Asset:Bank $1100")))
           
           (gnc:html-document-add-object!
            document
