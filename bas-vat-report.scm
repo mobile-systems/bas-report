@@ -1509,6 +1509,15 @@
         ;; Single transaction splits
         (else #f))))
 
+  (define (commafy alos)
+    (if (null? alos)
+        ""
+        (string-append
+         (car alos)
+         (if (null? (cdr alos))
+             ""
+             (string-append ", " (commafy (cdr alos)))))))
+
   (gnc:report-starting reportname)
   
   (let* ((document (gnc:make-html-document))
@@ -1641,14 +1650,14 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Input Tax accounts: "
-                    (map gnc-account-get-full-name accounts-tax-paid))))
+                    (commafy (map gnc-account-get-full-name accounts-tax-paid)))))
 
                 (gnc:html-document-add-object! 
                  document
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Output Tax accounts: "
-                   (map gnc-account-get-full-name accounts-tax-collected))))
+                   (commafy (map gnc-account-get-full-name accounts-tax-collected)))))
 
                 (if (null? (append accounts-tax-collected accounts-tax-paid))
                     (gnc:html-document-add-object! 
