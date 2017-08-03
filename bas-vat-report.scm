@@ -958,8 +958,11 @@
     ;(list (N_ "Shares")                       "k"  (N_ "Display the number of shares?") #f)
     ;(list (N_ "Price")                        "l"  (N_ "Display the shares price?") #f)
     ;; note the "Amount" multichoice option in between here
-    
-    (list (N_ "Totals")                       "o"  (N_ "Display the totals?") #t)))
+    (list (N_ "Totals")                       "o"  (N_ "Display the totals?") #t)
+    (list (N_ "Individual tax columns")       "p"  (N_ "Display individual tax columns rather than their sum") #f)
+    (list (N_ "Remittance amount")            "q"  (N_ "Display the remittance amount (total sales - total purchases)?") #f)
+    (list (N_ "Tax refund due")               "r"  (N_ "Display the tax refund due (tax on purchases - tax on sales)?") #f)
+))
 
   (if (qof-book-use-split-action-for-num-field (gnc-get-current-book))
       (gnc:register-trep-option
@@ -1102,23 +1105,27 @@
          (list
           (cons "Total Sales" total-sales)
           (cons "Net Sales" incomes-without-tax))
-         (map (lambda (acc)
-                (cons (xaccAccountGetName acc) (account-adder acc)))
-              accounts-tax-collected)
+         (if (gnc:option-value (gnc:lookup-option options gnc:pagename-display (N_ "Individual tax columns")))
+             (map (lambda (acc) (cons (xaccAccountGetName acc) (account-adder acc)))
+                  accounts-tax-collected)
+             (list (cons "Tax on Sales" tax-on-sales)))
          (list
           (cons "Total Purchases" total-purchases)
           (cons "Net Purchases" purchases-without-tax))
-         (map (lambda (acc)
-                (cons (xaccAccountGetName acc) (account-adder acc)))
-              accounts-tax-paid)
-         (list
-          (cons "Bank Remittance" bank-remittance)
-          (cons "Tax Refund" tax-refund-due)))
-              ))
+         (if (gnc:option-value (gnc:lookup-option options gnc:pagename-display (N_ "Individual tax columns")))
+             (map (lambda (acc) (cons (xaccAccountGetName acc) (account-adder acc)))
+                  accounts-tax-paid)
+             (list (cons "Tax on Purchases" tax-on-purchases)))
+         (if (gnc:option-value (gnc:lookup-option options gnc:pagename-display (N_ "Remittance amount")))
+             (list (cons "Bank Remittance" bank-remittance))
+             '())
+         (if (gnc:option-value (gnc:lookup-option options gnc:pagename-display (N_ "Tax refund due")))
+             (list (cons "Tax Refund" tax-refund-due))
+             '())
+        )))
 
     
-    (define (get-account-types-to-reverse options)
-      '()) ;disabled. May be misleading when calculating Tax credits/liability.
+    ;(define (get-account-types-to-reverse options)
     ;  (cdr (assq (gnc:option-value
     ;              (gnc:lookup-option options
     ;                                 (N_ "Display")
@@ -1295,13 +1302,14 @@
            (width (num-columns-required used-columns))
            (multi-rows? #f) ;disable. (transaction-report-multi-rows-p options))
            (export? #f)  ;disable. I've removed functionality from add-subtotal-row. (transaction-report-export-p options))
-           (account-types-to-reverse
-            (get-account-types-to-reverse options)))
+           (account-types-to-reverse '())) ;disabled.            (get-account-types-to-reverse '()))options)))
 
       (gnc:html-table-set-col-headers!
        table
        (make-heading-list used-columns calculated-cells options))
+
       ;;     (gnc:warn "Splits:" splits)
+      
       (if (not (null? splits))
           (begin
             (if primary-subheading-renderer 
@@ -1633,16 +1641,14 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Input Tax accounts: "
-                   (map gnc-account-get-full-name accounts-tax-paid)
-                   )))
+                    (map gnc-account-get-full-name accounts-tax-paid))))
 
                 (gnc:html-document-add-object! 
                  document
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Output Tax accounts: "
-                   (map gnc-account-get-full-name accounts-tax-collected)
-                   )))
+                   (map gnc-account-get-full-name accounts-tax-collected))))
 
                 (if (null? (append accounts-tax-collected accounts-tax-paid))
                     (gnc:html-document-add-object! 
