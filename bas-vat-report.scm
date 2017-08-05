@@ -9,7 +9,6 @@
 ;; Michael T. Garrison Stuber
 ;; Modified account names display by Tomas Pospisek
 ;; <tpo_deb@sourcepole.ch> with a lot of help from "warlord"
-;; transaction.scm was the original Transaction Report in Gnucash.
 ;; Heavily amended by Christopher Lam to add calculations
 ;; appropriate for GST/VAT, building on efforts by Doug Doughty.
 ;;
@@ -32,7 +31,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-module (gnucash report standard-reports bas-vat-report))
+(define-module (gnucash report standard-reports business-activity-report))
 
 (use-modules (gnucash main)) ;; FIXME: delete after we finish modularizing.
 (use-modules (srfi srfi-1))
@@ -46,7 +45,7 @@
 
 ;; Define the strings here to avoid typos and make changes easier.
 
-(define reportname (N_ "BAS/VAT Report"))
+(define reportname (N_ "Business Activity Report"))
 (define pagename-sorting (N_ "Sorting"))
 (define optname-prime-sortkey (N_ "Primary Key"))
 (define optname-prime-subtotal (N_ "Primary Subtotal"))
@@ -58,7 +57,7 @@
 ;(define optname-table-export (N_ "Table for Exporting"))
 (define optname-common-currency (N_ "Common Currency"))
 (define TAX-SETUP-DESC (string-append 
-                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales"
+                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales,"
                         " (to send to authorities) and 'Input' for tax paid on purchases (to be refunded from authorities)."
                         " These will be used to tabulate data. Please note the tax table percentages or values are unused"
                         " in this report. No warranty is implied. Please independently verify the figures. Please note"
@@ -471,7 +470,10 @@
     
     
     (for-each (lambda (arg)
-                (addto! heading-list (car arg)))
+                (addto! heading-list
+                        (gnc:make-html-table-cell/markup
+                         "column-heading-right"
+                         (car arg))))
               calculated-cells)
 
     (reverse heading-list)))
@@ -1088,6 +1090,7 @@
                                                   (set! sum (gnc-numeric-add sum splitVal GNC-DENOM-AUTO GNC-RND-ROUND))))
                                           ))
                                       splits-in-transaction)
+
                             sum)))                                 
            ;(incomes-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-INCOME)))
            ;(purchases-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-EXPENSE)))
