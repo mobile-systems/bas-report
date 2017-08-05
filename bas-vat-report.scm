@@ -9,7 +9,8 @@
 ;; Michael T. Garrison Stuber
 ;; Modified account names display by Tomas Pospisek
 ;; <tpo_deb@sourcepole.ch> with a lot of help from "warlord"
-;; Heavily amended by Christopher Lam to calculate add calculations
+;; transaction.scm was the original Transaction Report in Gnucash.
+;; Heavily amended by Christopher Lam to add calculations
 ;; appropriate for GST/VAT, building on efforts by Doug Doughty.
 ;;
 ;; This program is free software; you can redistribute it and/or    
@@ -31,7 +32,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-module (gnucash report bas-vat-report))
+(define-module (gnucash report standard-reports bas-vat-report))
 
 (use-modules (gnucash main)) ;; FIXME: delete after we finish modularizing.
 (use-modules (srfi srfi-1))
@@ -45,7 +46,7 @@
 
 ;; Define the strings here to avoid typos and make changes easier.
 
-(define reportname (N_ "BAS/VAT Report (beta)"))
+(define reportname (N_ "BAS/VAT Report"))
 (define pagename-sorting (N_ "Sorting"))
 (define optname-prime-sortkey (N_ "Primary Key"))
 (define optname-prime-subtotal (N_ "Primary Subtotal"))
@@ -57,7 +58,7 @@
 ;(define optname-table-export (N_ "Table for Exporting"))
 (define optname-common-currency (N_ "Common Currency"))
 (define TAX-SETUP-DESC (string-append 
-                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales,"
+                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales"
                         " (to send to authorities) and 'Input' for tax paid on purchases (to be refunded from authorities)."
                         " These will be used to tabulate data. Please note the tax table percentages or values are unused"
                         " in this report. No warranty is implied. Please independently verify the figures. Please note"
@@ -1087,7 +1088,6 @@
                                                   (set! sum (gnc-numeric-add sum splitVal GNC-DENOM-AUTO GNC-RND-ROUND))))
                                           ))
                                       splits-in-transaction)
-
                             sum)))                                 
            ;(incomes-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-INCOME)))
            ;(purchases-without-tax (lambda (s) (split-adder s #f ACCT-TYPE-EXPENSE)))
@@ -1509,15 +1509,6 @@
         ;; Single transaction splits
         (else #f))))
 
-  (define (commafy alos)
-    (if (null? alos)
-        ""
-        (string-append
-         (car alos)
-         (if (null? (cdr alos))
-             ""
-             (string-append ", " (commafy (cdr alos)))))))
-
   (gnc:report-starting reportname)
   
   (let* ((document (gnc:make-html-document))
@@ -1650,14 +1641,14 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Input Tax accounts: "
-                    (commafy (map gnc-account-get-full-name accounts-tax-paid)))))
+                    (string-join (map gnc-account-get-full-name accounts-tax-paid) ", "))))
 
                 (gnc:html-document-add-object! 
                  document
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Output Tax accounts: "
-                   (commafy (map gnc-account-get-full-name accounts-tax-collected)))))
+                   (string-join (map gnc-account-get-full-name accounts-tax-collected) ", "))))
 
                 (if (null? (append accounts-tax-collected accounts-tax-paid))
                     (gnc:html-document-add-object! 
