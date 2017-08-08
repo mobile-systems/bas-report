@@ -1,1 +1,2 @@
+(load (gnc-build-dotgnucash-path "reports/report-other-menu.scm"))
 (load (gnc-build-dotgnucash-path "reports/business-tax-report.scm"))
