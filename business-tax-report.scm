@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; BAS-VAT-Report.scm : Produce report suitable for VAT/GST reporting.
+;; Business-Tax-Report.scm : Produce report suitable for VAT/GST reporting.
 ;;
 ;; Original report by Robert Merkel <rgmerk@mira.net>
 ;; Contributions by Bryan Larsen <blarsen@ada-works.com>
@@ -9,7 +9,7 @@
 ;; Michael T. Garrison Stuber
 ;; Modified account names display by Tomas Pospisek
 ;; <tpo_deb@sourcepole.ch> with a lot of help from "warlord"
-;; Heavily amended by Christopher Lam to add calculations
+;; Heavily amended by Christopher Lam to calculate add calculations
 ;; appropriate for GST/VAT, building on efforts by Doug Doughty.
 ;;
 ;; This program is free software; you can redistribute it and/or    
@@ -31,7 +31,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define-module (gnucash report standard-reports business-activity-report))
+(define-module (gnucash report standard-reports business-tax-report))
 
 (use-modules (gnucash main)) ;; FIXME: delete after we finish modularizing.
 (use-modules (srfi srfi-1))
@@ -39,13 +39,14 @@
 (use-modules (gnucash gettext))
 (use-modules (gnucash printf))
 (gnc:module-load "gnucash/report/report-system" 0)
+(use-modules (gnucash report-other-menu))
 
 (define-macro (addto! alist element)
   `(set! ,alist (cons ,element ,alist)))
 
 ;; Define the strings here to avoid typos and make changes easier.
 
-(define reportname (N_ "Business Activity Report"))
+(define reportname (N_ "Business Tax Report"))
 (define pagename-sorting (N_ "Sorting"))
 (define optname-prime-sortkey (N_ "Primary Key"))
 (define optname-prime-subtotal (N_ "Primary Subtotal"))
@@ -57,8 +58,8 @@
 ;(define optname-table-export (N_ "Table for Exporting"))
 (define optname-common-currency (N_ "Common Currency"))
 (define TAX-SETUP-DESC (string-append 
-                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales,"
-                        " (to send to authorities) and 'Input' for tax paid on purchases (to be refunded from authorities)."
+                        " From Business > Sales Tax Tables, create a Tax Table named 'Output' for tax collected on sales"
+                        " (to send to authorities), and 'Input' for tax paid on purchases (to be refunded from authorities)."
                         " These will be used to tabulate data. Please note the tax table percentages or values are unused"
                         " in this report. No warranty is implied. Please independently verify the figures. Please note"
                         " the Input/Output account names will be used to label the columns."))
@@ -223,15 +224,12 @@
         (amount-or-blank (lambda (monetary)
                            (if (zero? (gnc:gnc-numeric-num (gnc:gnc-monetary-amount monetary)))
                                (gnc:html-make-empty-cell)
-                               monetary))))
+                               (gnc:make-html-table-cell/markup "total-number-cell" monetary)))))
     
     ;(gnc:warn "Columns = " columns)
     (addto! row-contents (gnc:make-html-table-cell/size/markup 1 width "total-label-cell" subtotal-string))
     (for-each (lambda (coll)
-                (addto! row-contents
-                        (gnc:make-html-table-cell/markup
-                         "total-number-cell"
-                         (amount-or-blank (car coll)))))
+                (addto! row-contents (amount-or-blank (car coll))))
               columns)
     (gnc:html-table-append-row/markup! table subtotal-style (reverse row-contents))
 
@@ -240,10 +238,7 @@
                 (set! row (+ row 1))
                 (addto! row-contents (gnc:make-html-table-cell/size/markup 1 width "total-label-cell" ""))
                 (for-each (lambda (coll)
-                            (addto! row-contents
-                                    (gnc:make-html-table-cell/markup
-                                     "total-number-cell"
-                                     (amount-or-blank (list-ref coll row)))))
+                            (addto! row-contents (amount-or-blank (list-ref coll row))))
                           columns)
                 (gnc:html-table-append-row/markup! table subtotal-style (reverse row-contents)))
               (cdr (car columns)))))
@@ -963,9 +958,9 @@
     ;; note the "Amount" multichoice option in between here
     (list (N_ "Totals")                       "o"  (N_ "Display the totals?") #t)
     (list (N_ "Individual tax columns")       "p"  (N_ "Display individual tax columns rather than their sum") #f)
-    (list (N_ "Remittance amount")            "q"  (N_ "Display the remittance amount (total sales - total purchases)?") #f)
-    (list (N_ "Tax refund due")               "r"  (N_ "Display the tax refund due (tax on purchases - tax on sales)?") #f)
-))
+    (list (N_ "Remittance amount")            "q"  (N_ "Display the remittance amount (total sales - total purchases)?") #t)
+    (list (N_ "Tax refund due")               "r"  (N_ "Display the tax refund due (tax on purchases - tax on sales)?") #t)
+    ))
 
   (if (qof-book-use-split-action-for-num-field (gnc-get-current-book))
       (gnc:register-trep-option
@@ -1125,7 +1120,7 @@
          (if (gnc:option-value (gnc:lookup-option options gnc:pagename-display (N_ "Tax refund due")))
              (list (cons "Tax Refund" tax-refund-due))
              '())
-        )))
+         )))
 
     
     ;(define (get-account-types-to-reverse options)
@@ -1217,17 +1212,17 @@
 
             ;(gnc:warn "sv = " split-values)
             
-            (map (lambda (collector value)
+            (for-each (lambda (collector value)
                    (collector 'add (gnc:gnc-monetary-commodity value) (gnc:gnc-monetary-amount value)))
                  primary-subtotal-collectors
                  split-values)
 
-            (map (lambda (collector value)
+            (for-each (lambda (collector value)
                    (collector 'add (gnc:gnc-monetary-commodity value) (gnc:gnc-monetary-amount value)))
                  secondary-subtotal-collectors
                  split-values)
 
-            (map (lambda (collector value)
+            (for-each (lambda (collector value)
                    (collector 'add (gnc:gnc-monetary-commodity value) (gnc:gnc-monetary-amount value)))
                  total-collectors
                  split-values)
@@ -1644,7 +1639,7 @@
                  (gnc:make-html-text
                   (gnc:html-markup-p
                    "Input Tax accounts: "
-                    (string-join (map gnc-account-get-full-name accounts-tax-paid) ", "))))
+                   (string-join (map gnc-account-get-full-name accounts-tax-paid) ", "))))
 
                 (gnc:html-document-add-object! 
                  document
@@ -1704,9 +1699,9 @@
 
 ;; Define the report.
 (gnc:define-report
- 'version 20170731
- 'menu-path (list gnc:menuname-business-reports)
+ 'version 20170807
+ 'menu-path (list gnc:menuname-other)
  'name reportname
- 'report-guid "2fe3bba544212fae95a59620f"
+ 'report-guid "2fe3bbaasd12fae95a59620f"
  'options-generator trep-options-generator
  'renderer trep-renderer)
