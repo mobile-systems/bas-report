@@ -4,7 +4,7 @@ Suitable for periodic business activity reporting within Gnucash
 
 # Installation
 * _config.user_ illustrates modification to existing file in ~/.gnucash folder
-* _business-tax-report.scm_ could be copied to ~/.gnucash/report folder
+* _business-tax-report.scm_ and _report-other-menu.scm_ are to be copied to ~/.gnucash/report folder
 
 # Instructions
 You will need to set up tax holding accounts, usually liability or asset accounts, which will hold splits in multisplit transactions.
