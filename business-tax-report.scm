@@ -1717,7 +1717,7 @@
 
 ;; Define the report.
 (gnc:define-report
- 'version 20170807
+ 'version 20170811
  'menu-path (list gnc:menuname-other)
  'name reportname
  'report-guid "2fe3bbaasd12fae95a59620f"
