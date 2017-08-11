@@ -12,6 +12,8 @@
 ;; Heavily amended by Christopher Lam to calculate add calculations
 ;; appropriate for GST/VAT, building on efforts by Doug Doughty.
 ;;
+;; Small amendments by Spandan Sinha to incorporate Indian GST rates.
+;;
 ;; This program is free software; you can redistribute it and/or    
 ;; modify it under the terms of the GNU General Public License as   
 ;; published by the Free Software Foundation; either version 2 of   
@@ -1514,10 +1516,26 @@
          (c_account_2 (opt-val gnc:pagename-accounts "Filter By..."))
          (accounts-tax-collected (map (lambda (ttentry)
                                         (gncTaxTableEntryGetAccount ttentry))
-                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output"))))
+                                      (append (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 5" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 12" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 18" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 28" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 5 InterSt" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 12 InterSt" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 18 InterSt" ))
+                                      (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output 28 InterSt" ))
+									  (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Output" )))))
          (accounts-tax-paid (map (lambda (ttentry)
                                    (gncTaxTableEntryGetAccount ttentry))
-                                 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input"))))
+                                 (append (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 5" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 12" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 18" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 28" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 5 InterSt" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 12 InterSt" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 18 InterSt" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input 28 InterSt" ))
+								 (gncTaxTableGetEntries (gncTaxTableLookupByName (gnc-get-current-book) "Input" )))))         
          (accounts-incomes (filter (lambda (acc) (eq? (xaccAccountGetType acc) ACCT-TYPE-INCOME)) c_account_1))
          (accounts-purchases (filter (lambda (acc) (eq? (xaccAccountGetType acc) ACCT-TYPE-EXPENSE)) c_account_1))
          (filter-mode (opt-val gnc:pagename-accounts "Filter Type"))
